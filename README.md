@@ -4,4 +4,4 @@ Using SIFT, SURF and ORB to get the feature map (characteric point of each image
 
 
 
-![final_result] (/final_result.PNG)
+![final_result] (/dataset/left/0000.jpg)
