@@ -161,76 +161,7 @@ def crop_image(img):
 		
 		#print(pto11_flag,pto12_flag,pto21_flag,pto22_flag)
 		if pto11_flag == pto12_flag == pto21_flag == pto22_flag == False: break
-		
-		 
-		#cv2.rectangle(img, tuple(pto11), tuple(pto22),(255, 0, 0), 1)
-		'''cv2.circle(img, (center_w,center_h), 2, (255, 255, 255, 2), 1)   
-		cv2.circle(img, tuple(pto11), 2, (255, 255, 255, 2), 1)   
-		cv2.circle(img, tuple(pto12), 2, (255, 255, 255, 2), 1)   
-		cv2.circle(img, tuple(pto21), 2, (255, 255, 255, 2), 1)   
-		cv2.circle(img, tuple(pto22), 2, (255, 255, 255, 2), 1)'''
-		 
-	'''if pto11[0]<pto21[0]:
-		if img[pto21[1],pto11[0]] > 0:
-			min_x1=pto21[0]
-		else:
-			min_x1=pto11[0]
-	else:
-		if img[pto11[1],pto21[0]] > 0:
-			min_x1=pto21[0]
-		else:
-			min_x1=pto11[0]
-
-	pto11[0] = min_x1
-	pto21[0] = min_x1			
-	 
-	if pto11[1]<pto12[1]:
-		if img[pto11[1],pto12[0]] > 0:
-			min_y1=pto11[1]
-		else:
-			min_y1=pto12[1]
-	else:
-		if img[pto12[1],pto11[0]] > 0:
-			min_y1=pto12[1]
-		else:
-			min_y1=pto11[1]
-	 
-	pto11[1] = min_y1
-	pto12[1] = min_y1
-	 
-	 
-	if pto12[0]>pto22[0]:
-		if img[pto22[1],pto12[0]] > 0:
-			max_x2=pto22[0]
-		else:
-			max_x2=pto12[0]
-	else:
-		if img[pto12[1],pto22[0]] > 0:
-			max_x2=pto12[0]
-		else:
-			max_x2=pto22[0]
-	
-	pto12[0] = max_x2
-	pto22[0] = max_x2
-
-	if pto21[1]>pto22[1]:
-		if img[pto21[1],pto22[0]] > 0:
-			max_y2=pto21[1]
-		else:
-			max_y2=pto22[1]
-	else:
-		if img[pto22[1],pto21[0]] > 0:
-			max_y2=pto22[1]
-		else:
-			max_y2=pto21[1]
-		 
-	pto21[1] = max_y2
-	pto22[1] = max_y2'''
-
-		#print(min_x1,min_y1,max_x2,max_y2,pto11,pto21,pto12)
-		 
-		#cv2.imshow('image2', img_tmp)
-		#cv2.waitKey(100)
+				 
 	
 	pto11[1] = max(pto11[1],pto12[1])
 	pto12[1] = max(pto11[1],pto12[1])
@@ -342,20 +273,6 @@ def orb_feature(img1,img2,max_match=0.10,show=True):
 		img1_pts[i,:] = kp1[match.queryIdx].pt
 		img2_pts[i,:] = kp2[match.trainIdx].pt
 
-	
-
-	#M, mask = cv2.findHomography(img1_pts,img2_pts, cv2. RANSAC)
-	#h,w = img2.shape[:2]
-	#img_orb = cv2.warpPerspective(img1,M,(w,h))
-	#cv2.imshow("orb_result",img_orb)
-
-	#pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
-	#dst = cv2.perspectiveTransform(pts,M)
-	#perspectiveM = cv2.getPerspectiveTransform(np.float32(dst),pts)
-	#result = cv2.warpPerspective(img2,perspectiveM,(w,h))
-	#cv2.imshow("orb_result2",result)
-
-	#if len(good)>10:
 	return img1_pts,img2_pts
 
 
@@ -387,173 +304,25 @@ def compare(img1, img2):
 #cv2.setTrackbarPos("SIFT","Controls",40)
 
 
-
-
-dataset_folder = "dataset2"
+dataset_folder = "dataset"
 
 if os.path.exists(dataset_folder):
-	files_domo = [dataset_folder+"/160_domo/"+img for img in os.listdir(dataset_folder+"/160_domo") if img.endswith(".jpg")]
-	files_axis = [dataset_folder+"/320_axis/"+img for img in os.listdir(dataset_folder+"/320_axis") if img.endswith(".jpg")]
-	#files_flir = [dataset_folder+"/640_flir/"+img for img in os.listdir(dataset_folder+"/640_flir") if img.endswith(".jpg")]
+	files_left = [dataset_folder+"/left/"+img for img in os.listdir(dataset_folder+"/left") if img.endswith(".jpg")]
+	files_right = [dataset_folder+"/right/"+img for img in os.listdir(dataset_folder+"/right") if img.endswith(".jpg")]
 
-	for i in range(len(files_domo)):
-		img1 = cv2.imread(files_axis[i],0)
-		img2 = cv2.imread(files_domo[i],0)
+	for i in range(len(files_left)):
+		img1 = cv2.imread(files_left[i],0)
+		img2 = cv2.imread(files_right[i],0)
 		#img1 = cv2.resize(img1,(340,280),interpolation=cv2.INTER_CUBIC)
 		#img2 = cv2.resize(img2,(340,280),interpolation=cv2.INTER_CUBIC)
 
 		img1_heigth,img1_width = img1.shape[:2]
-		#img1 = abs(255-img1)
-		#img2 = abs(255-img2)
-
 
 		compare(img1,img2)
 		get_morpholy()
 		
-		#img1_heigth,img1_width = img1.shape[:2]
-		#compare(img1,img2)
-		#get_morpholy()
-
-
 		key = cv2.waitKey(0)
 		if key==27: exit()
 
 else:
 	exit("No folder found")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-exit()
-
-
-#from __future__ import print_function
-
-import cv2
-import numpy as np
- 
-
-print(cv2.__version__)
-############### Image Matching ###############
-
-
-def match_images(img1, img2):
-	"""Given two images, returns the matches"""
-	sift = cv2.xfeatures2d.SIFT_create()
-	detector = cv2.xfeatures2d.SURF_create(400, 5, 5)
-	matcher = cv2.BFMatcher(cv2.NORM_L2)
-
-	kp1, desc1 = detector.detectAndCompute(img1, None)
-	kp2, desc2 = detector.detectAndCompute(img2, None)
-
-	raw_matches = matcher.knnMatch(desc1, trainDescriptors = desc2, k = 2) 
-	kp_pairs = filter_matches(kp1, kp2, raw_matches)
-	return kp_pairs
-
-def filter_matches(kp1, kp2, matches, ratio = 0.75):
-	mkp1, mkp2 = [], []
-	for m in matches:
-		if len(m) == 2 and m[0].distance < m[1].distance * ratio:
-			m = m[0]
-			mkp1.append( kp1[m.queryIdx] )
-			mkp2.append( kp2[m.trainIdx] )
-	kp_pairs = zip(mkp1, mkp2)
-	return kp_pairs
-
-############### Match Diplaying ###############
-
-def explore_match(win, img1, img2, kp_pairs, status = None, H = None):
-	h1, w1 = img1.shape[:2]
-	h2, w2 = img2.shape[:2]
-	vis = numpy.zeros((max(h1, h2), w1+w2), numpy.uint8)
-	vis[:h1, :w1] = img1
-	vis[:h2, w1:w1+w2] = img2
-	vis = cv2.cvtColor(vis, cv2.COLOR_GRAY2BGR)
-
-	if H is not None:
-		corners = numpy.float32([[0, 0], [w1, 0], [w1, h1], [0, h1]])
-		corners = numpy.int32( cv2.perspectiveTransform(corners.reshape(1, -1, 2), H).reshape(-1, 2) + (w1, 0) )
-		cv2.polylines(vis, [corners], True, (255, 255, 255))
-
-	if status is None:
-		status = numpy.ones(len(kp_pairs), numpy.bool_)
-	p1 = numpy.int32([kpp[0].pt for kpp in kp_pairs])
-	p2 = numpy.int32([kpp[1].pt for kpp in kp_pairs]) + (w1, 0)
-
-	green = (0, 255, 0)
-	red = (0, 0, 255)
-	white = (255, 255, 255)
-	kp_color = (51, 103, 236)
-	for (x1, y1), (x2, y2), inlier in zip(p1, p2, status):
-		if inlier:
-			col = green
-			cv2.circle(vis, (x1, y1), 2, col, -1)
-			cv2.circle(vis, (x2, y2), 2, col, -1)
-		else:
-			col = red
-			r = 2
-			thickness = 3
-			cv2.line(vis, (x1-r, y1-r), (x1+r, y1+r), col, thickness)
-			cv2.line(vis, (x1-r, y1+r), (x1+r, y1-r), col, thickness)
-			cv2.line(vis, (x2-r, y2-r), (x2+r, y2+r), col, thickness)
-			cv2.line(vis, (x2-r, y2+r), (x2+r, y2-r), col, thickness)
-	vis0 = vis.copy()
-	for (x1, y1), (x2, y2), inlier in zip(p1, p2, status):
-		if inlier:
-			cv2.line(vis, (x1, y1), (x2, y2), green)
-	cv2.imshow(win, vis)   
-	cv2.waitKey(0)
-	cv2.destroyAllWindows()
-
-
-def draw_matches(window_name, kp_pairs, img1, img2):
-	"""Draws the matches for """
-	mkp1, mkp2 = zip(*kp_pairs)
-
-	p1 = np.float32([kp.pt for kp in mkp1])
-	p2 = np.float32([kp.pt for kp in mkp2])
-
-	if len(kp_pairs) >= 4:
-		H, status = cv2.findHomography(p1, p2, cv2.RANSAC, 5.0)
-	else:
-		H, status = None, None
-	if len(p1):
-		explore_match(window_name, img1, img2, kp_pairs, status, H)
-
-############### Test ###############
-
-img1 = cv2.imread('orig.jpg', 0)
-img2 = cv2.imread('rota.jpg', 0)
-cv2.imshow('REAL',img1)
-cv2.imshow('Rotated',img2)
-img_1= cv2.resize(img1,(500,600))
-img_2= cv2.resize(img2,(500,600))
-kp_pairs = match_images(img1, img2)
-if kp_pairs:
-	draw_matches('Matching Features', kp_pairs, img1, img2)	
-else:
-	print ("No matches found")
-
-##  Crop the matched region from scene
-h,w = img1.shape[:2]
-pts = np.float32([ [0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
-dst = cv2.perspectiveTransform(pts,M)
-perspectiveM = cv2.getPerspectiveTransform(np.float32(dst),pts)
-found = cv2.warpPerspective(img2,perspectiveM,(w,h))
-cv2.imwrite("found.png", found)
