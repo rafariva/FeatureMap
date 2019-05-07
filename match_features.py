@@ -51,8 +51,8 @@ def get_morpholy():
 		min_y1,max_y2,min_x1,max_x2,_ = crop_image(result)
 		print(min_y1,max_y2,min_x1,max_x2)
 
-		cv2.imshow("img_src",img1)
-		cv2.imshow("result",result)
+		cv2.imshow("left",img1)
+		cv2.imshow("right",result)
 		
 		if max_y2>min_y1 and max_x2>min_x1:
 			result_crop = result[min_y1:max_y2,min_x1:max_x2]
